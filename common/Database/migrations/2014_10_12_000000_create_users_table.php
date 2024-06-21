@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password', 60);
             $table->string('card_brand', 30)->nullable();
-            $table->string('card_last_four', 4)->nullable();
+            $table->string('card_last_four', 30)->nullable();
             $table->rememberToken();
             $table
                 ->timestamp('created_at')

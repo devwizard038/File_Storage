@@ -19,7 +19,7 @@ interface Props {
   user: User;
 }
 
-function PaypalPayment(){
+function CardPayment(){
   const form = useForm<Card>({
     defaultValues: {
       first_name: '',
@@ -106,15 +106,7 @@ export function PricingPage() {
           <Trans message="Choose the right plan for you" />
         </h1>
 
-        <BillingCycleRadio
-          products={query.data?.products}
-          selectedCycle={selectedCycle}
-          onChange={setSelectedCycle}
-          className="mb-40 flex justify-center md:mb-70"
-          size="lg"
-        />
-
-        <PaypalPayment />
+        <CardPayment />
 
         <ContactSection />
       </div>

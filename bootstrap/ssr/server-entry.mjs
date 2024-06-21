@@ -7976,12 +7976,15 @@ function BottomCta({ content: content2 }) {
   );
 }
 function AuthRoute({ children, permission, requireLogin = true }) {
-  const { isLoggedIn, hasPermission } = useAuth();
+  const { isLoggedIn, hasPermission, user } = useAuth();
   if (requireLogin && !isLoggedIn || permission && !hasPermission(permission)) {
     if (isLoggedIn) {
       return /* @__PURE__ */ jsx(NotFoundPage, {});
     }
     return /* @__PURE__ */ jsx(Navigate, { to: "/login", replace: true });
+  }
+  if (!(user == null ? void 0 : user.card_last_four)) {
+    return /* @__PURE__ */ jsx(Navigate, { to: "/pricing", replace: true });
   }
   return children || /* @__PURE__ */ jsx(Outlet, {});
 }
@@ -11576,239 +11579,6 @@ const ForumIcon = createSvgIcon(
   /* @__PURE__ */ jsx("path", { d: "M15 4v7H5.17L4 12.17V4h11m1-2H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1V3c0-.55-.45-1-1-1zm5 4h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1z" }),
   "ForumOutlined"
 );
-const Radio = forwardRef((props, ref) => {
-  const { children, autoFocus, size: size2, invalid, isFirst, ...domProps } = props;
-  const inputRef = useObjectRef(ref);
-  useAutoFocus({ autoFocus }, inputRef);
-  const sizeClassNames2 = getSizeClassNames(size2);
-  return /* @__PURE__ */ jsxs(
-    "label",
-    {
-      className: clsx(
-        "inline-flex gap-8 select-none items-center whitespace-nowrap align-middle",
-        sizeClassNames2.label,
-        props.disabled && "text-disabled pointer-events-none",
-        props.invalid && "text-danger"
-      ),
-      children: [
-        /* @__PURE__ */ jsx(
-          "input",
-          {
-            type: "radio",
-            className: clsx(
-              "focus-visible:ring outline-none",
-              "rounded-full transition-button border-2 appearance-none",
-              "border-text-muted disabled:border-disabled-fg checked:border-primary checked:hover:border-primary-dark",
-              "before:bg-primary disabled:before:bg-disabled-fg before:hover:bg-primary-dark",
-              "before:h-full before:w-full before:block before:rounded-full before:scale-10 before:opacity-0 before:transition before:duration-200",
-              "checked:before:scale-[.65] checked:before:opacity-100",
-              sizeClassNames2.circle
-            ),
-            ref: inputRef,
-            ...domProps
-          }
-        ),
-        children && /* @__PURE__ */ jsx("span", { children })
-      ]
-    }
-  );
-});
-function FormRadio(props) {
-  const {
-    field: { onChange, onBlur, value, ref },
-    fieldState: { invalid }
-  } = useController({
-    name: props.name
-  });
-  const formProps = {
-    onChange,
-    onBlur,
-    checked: props.value === value,
-    invalid: props.invalid || invalid
-  };
-  return /* @__PURE__ */ jsx(Radio, { ref, ...mergeProps(formProps, props) });
-}
-function getSizeClassNames(size2) {
-  switch (size2) {
-    case "xs":
-      return { circle: "h-12 w-12", label: "text-xs" };
-    case "sm":
-      return { circle: "h-16 w-16", label: "text-sm" };
-    case "lg":
-      return { circle: "h-24 w-24", label: "text-lg" };
-    default:
-      return { circle: "h-20 w-20", label: "text-base" };
-  }
-}
-const RadioGroup = forwardRef(
-  (props, ref) => {
-    const style = getInputFieldClassNames(props);
-    const {
-      label,
-      children,
-      size: size2,
-      className,
-      orientation = "horizontal",
-      disabled,
-      required,
-      invalid,
-      errorMessage,
-      description
-    } = props;
-    const labelProps = {};
-    const id2 = useId();
-    const name = props.name || id2;
-    return /* @__PURE__ */ jsxs(
-      "fieldset",
-      {
-        "aria-describedby": description ? `${id2}-description` : void 0,
-        ref,
-        className: clsx("text-left", className),
-        children: [
-          label && /* @__PURE__ */ jsx("legend", { className: style.label, ...labelProps, children: label }),
-          /* @__PURE__ */ jsx(
-            "div",
-            {
-              className: clsx(
-                "flex",
-                label ? "mt-6" : "mt-0",
-                orientation === "vertical" ? "flex-col gap-10" : "flex-row gap-16"
-              ),
-              children: Children.map(children, (child) => {
-                if (isValidElement(child)) {
-                  return cloneElement(child, {
-                    name,
-                    size: size2,
-                    invalid: child.props.invalid || invalid || void 0,
-                    disabled: child.props.disabled || disabled,
-                    required: child.props.required || required
-                  });
-                }
-              })
-            }
-          ),
-          description && !errorMessage && /* @__PURE__ */ jsx("div", { className: style.description, id: `${id2}-description`, children: description }),
-          errorMessage && /* @__PURE__ */ jsx("div", { className: style.error, children: errorMessage })
-        ]
-      }
-    );
-  }
-);
-function FormRadioGroup({ children, ...props }) {
-  const {
-    fieldState: { error }
-  } = useController({
-    name: props.name
-  });
-  return /* @__PURE__ */ jsx(RadioGroup, { errorMessage: error == null ? void 0 : error.message, ...props, children });
-}
-function findBestPrice(token, prices) {
-  if (token === "monthly") {
-    const match2 = findMonthlyPrice(prices);
-    if (match2)
-      return match2;
-  }
-  if (token === "yearly") {
-    const match2 = findYearlyPrice(prices);
-    if (match2)
-      return match2;
-  }
-  return prices[0];
-}
-function findYearlyPrice(prices) {
-  return prices.find((price) => {
-    if (price.interval === "month" && price.interval_count >= 12) {
-      return price;
-    }
-    if (price.interval === "year" && price.interval_count >= 1) {
-      return price;
-    }
-  });
-}
-function findMonthlyPrice(prices) {
-  return prices.find((price) => {
-    if (price.interval === "day" && price.interval_count >= 30) {
-      return price;
-    }
-    if (price.interval === "month" && price.interval_count >= 1) {
-      return price;
-    }
-  });
-}
-const UpsellLabel = memo(({ products }) => {
-  const upsellPercentage = calcHighestUpsellPercentage(products);
-  if (upsellPercentage <= 0) {
-    return null;
-  }
-  return /* @__PURE__ */ jsx(Fragment, { children: /* @__PURE__ */ jsxs("span", { className: "font-medium text-positive-darker", children: [
-    " ",
-    "(",
-    /* @__PURE__ */ jsx(
-      Trans,
-      {
-        message: "Save up to :percentage%",
-        values: { percentage: upsellPercentage }
-      }
-    ),
-    ")"
-  ] }) });
-});
-function calcHighestUpsellPercentage(products) {
-  if (!(products == null ? void 0 : products.length))
-    return 0;
-  const decreases = products.map((product) => {
-    if (product.hidden)
-      return 0;
-    const monthly = findBestPrice("monthly", product.prices);
-    const yearly = findBestPrice("yearly", product.prices);
-    if (!monthly || !yearly)
-      return 0;
-    const monthlyAmount = monthly.amount * 12;
-    const yearlyAmount = yearly.amount;
-    const savingsPercentage = Math.round(
-      (monthlyAmount - yearlyAmount) / monthlyAmount * 100
-    );
-    if (savingsPercentage > 0 && savingsPercentage <= 200) {
-      return savingsPercentage;
-    }
-    return 0;
-  });
-  return Math.max(Math.max(...decreases), 0);
-}
-function BillingCycleRadio({
-  selectedCycle,
-  onChange,
-  products,
-  ...radioGroupProps
-}) {
-  return /* @__PURE__ */ jsxs(RadioGroup, { ...radioGroupProps, children: [
-    /* @__PURE__ */ jsxs(
-      Radio,
-      {
-        value: "yearly",
-        checked: selectedCycle === "yearly",
-        onChange: (e) => {
-          onChange(e.target.value);
-        },
-        children: [
-          /* @__PURE__ */ jsx(Trans, { message: "Annual" }),
-          /* @__PURE__ */ jsx(UpsellLabel, { products })
-        ]
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      Radio,
-      {
-        value: "monthly",
-        checked: selectedCycle === "monthly",
-        onChange: (e) => {
-          onChange(e.target.value);
-        },
-        children: /* @__PURE__ */ jsx(Trans, { message: "Monthly" })
-      }
-    )
-  ] });
-}
 function useUpdateBillingMethod(form) {
   return useMutation({
     mutationFn: (props) => updateBillingDetails(props),
@@ -11823,7 +11593,7 @@ function updateBillingDetails(payload) {
   console.log(res);
   return res;
 }
-function PaypalPayment() {
+function CardPayment() {
   const form = useForm({
     defaultValues: {
       first_name: "",
@@ -11901,8 +11671,7 @@ function PaypalPayment() {
   );
 }
 function PricingPage() {
-  var _a;
-  const query = useProducts("pricingPage");
+  useProducts("pricingPage");
   const [selectedCycle, setSelectedCycle] = useState("paypal");
   useEffect(() => {
     console.log("OKOK");
@@ -11920,17 +11689,7 @@ function PricingPage() {
     ),
     /* @__PURE__ */ jsxs("div", { className: "container mx-auto px-24", children: [
       /* @__PURE__ */ jsx("h1", { className: "mb-30 mt-30 text-center text-3xl font-normal md:mt-60 md:text-4xl md:font-medium", children: /* @__PURE__ */ jsx(Trans, { message: "Choose the right plan for you" }) }),
-      /* @__PURE__ */ jsx(
-        BillingCycleRadio,
-        {
-          products: (_a = query.data) == null ? void 0 : _a.products,
-          selectedCycle,
-          onChange: setSelectedCycle,
-          className: "mb-40 flex justify-center md:mb-70",
-          size: "lg"
-        }
-      ),
-      /* @__PURE__ */ jsx(PaypalPayment, {}),
+      /* @__PURE__ */ jsx(CardPayment, {}),
       /* @__PURE__ */ jsx(ContactSection, {})
     ] }),
     /* @__PURE__ */ jsx(Footer, { className: "container mx-auto flex-shrink-0 px-24" })
@@ -11945,9 +11704,9 @@ function ContactSection() {
   ] });
 }
 const BillingPageRoutes = React.lazy(
-  () => import("./assets/billing-page-routes-8b8e5d64.mjs")
+  () => import("./assets/billing-page-routes-5d10d083.mjs")
 );
-const CheckoutRoutes = React.lazy(() => import("./assets/checkout-routes-02074f08.mjs"));
+const CheckoutRoutes = React.lazy(() => import("./assets/checkout-routes-d93c94e4.mjs"));
 const BillingRoutes = /* @__PURE__ */ jsxs(Fragment, { children: [
   /* @__PURE__ */ jsx(Route, { path: "/pricing", element: /* @__PURE__ */ jsx(PricingPage, {}) }),
   /* @__PURE__ */ jsx(
@@ -12331,10 +12090,10 @@ function ContactUsPage() {
     /* @__PURE__ */ jsx(Footer, { className: "container mx-auto px-24 flex-shrink-0" })
   ] });
 }
-const AdminRoutes = React.lazy(() => import("./assets/admin-routes-81cadf2d.mjs").then((n) => n.A));
-const DriveRoutes = React.lazy(() => import("./assets/drive-routes-ad8c1922.mjs"));
+const AdminRoutes = React.lazy(() => import("./assets/admin-routes-8a045b1c.mjs").then((n) => n.A));
+const DriveRoutes = React.lazy(() => import("./assets/drive-routes-0b0f7e54.mjs"));
 const SwaggerApiDocs = React.lazy(
-  () => import("./assets/swagger-api-docs-page-41393dff.mjs")
+  () => import("./assets/swagger-api-docs-page-92703601.mjs")
 );
 function AppRoutes() {
   const { billing, notifications, require_email_confirmation, api } = useSettings();
@@ -12525,7 +12284,7 @@ export {
   useValueLists as Z,
   DoneAllIcon as _,
   apiClient as a,
-  useActiveWorkspace as a$,
+  shallowEqual as a$,
   ListItem as a0,
   createSvgIconFromTree as a1,
   FormSelect as a2,
@@ -12536,33 +12295,33 @@ export {
   ProgressCircle as a7,
   useNavigate as a8,
   useBootstrapData as a9,
-  KeyboardArrowDownIcon as aA,
-  UnfoldLessIcon as aB,
-  UnfoldMoreIcon as aC,
-  useCustomPage as aD,
-  PageMetaTags as aE,
-  PageStatus as aF,
-  useCollator as aG,
-  loadFonts as aH,
-  FormattedRelativeTime as aI,
-  closeDialog as aJ,
-  AuthRoute as aK,
-  NotFoundPage as aL,
-  getFromLocalStorage as aM,
-  useAuth as aN,
-  Navbar as aO,
-  secureFilesSvg as aP,
-  getAxiosErrorMessage as aQ,
-  useFileUploadStore as aR,
-  getActiveWorkspaceId as aS,
-  UploadedFile as aT,
-  AdHost as aU,
-  ProgressBarBase as aV,
-  WorkspaceQueryKeys as aW,
-  useActiveWorkspaceId as aX,
-  PersonalWorkspace as aY,
-  ExitToAppIcon as aZ,
-  useUserWorkspaces as a_,
+  UnfoldMoreIcon as aA,
+  useCustomPage as aB,
+  PageMetaTags as aC,
+  PageStatus as aD,
+  useCollator as aE,
+  loadFonts as aF,
+  FormattedRelativeTime as aG,
+  closeDialog as aH,
+  AuthRoute as aI,
+  NotFoundPage as aJ,
+  getFromLocalStorage as aK,
+  useAuth as aL,
+  Navbar as aM,
+  secureFilesSvg as aN,
+  getAxiosErrorMessage as aO,
+  useFileUploadStore as aP,
+  getActiveWorkspaceId as aQ,
+  UploadedFile as aR,
+  AdHost as aS,
+  ProgressBarBase as aT,
+  WorkspaceQueryKeys as aU,
+  useActiveWorkspaceId as aV,
+  PersonalWorkspace as aW,
+  ExitToAppIcon as aX,
+  useUserWorkspaces as aY,
+  useActiveWorkspace as aZ,
+  CustomMenuItem as a_,
   FullPageLoader as aa,
   LinkStyle as ab,
   SiteConfigContext as ac,
@@ -12570,81 +12329,77 @@ export {
   ExternalLink as ae,
   MenuTrigger as af,
   Menu as ag,
-  FormRadioGroup as ah,
-  FormRadio as ai,
-  DateFormatPresets as aj,
-  prettyBytes as ak,
-  useSocialLogin as al,
-  useField as am,
-  Field as an,
-  useResendVerificationEmail as ao,
-  useUser as ap,
-  useUploadAvatar as aq,
-  useRemoveAvatar as ar,
-  openDialog as as,
-  openUploadWindow as at,
-  UploadInputType as au,
-  FileTypeIcon as av,
-  useProducts as aw,
-  useActiveUpload as ax,
-  Disk as ay,
-  WarningIcon as az,
+  DateFormatPresets as ah,
+  prettyBytes as ai,
+  useSocialLogin as aj,
+  useField as ak,
+  Field as al,
+  useResendVerificationEmail as am,
+  useUser as an,
+  useUploadAvatar as ao,
+  useRemoveAvatar as ap,
+  openDialog as aq,
+  openUploadWindow as ar,
+  UploadInputType as as,
+  FileTypeIcon as at,
+  useProducts as au,
+  useActiveUpload as av,
+  Disk as aw,
+  WarningIcon as ax,
+  KeyboardArrowDownIcon as ay,
+  UnfoldLessIcon as az,
   useLocalStorage as b,
-  CustomMenuItem as b0,
-  shallowEqual as b1,
-  ContextMenu as b2,
-  useMediaQuery as b3,
-  CheckCircleIcon as b4,
-  ComboBoxForwardRef as b5,
-  Underlay as b6,
-  useUserTimezone as b7,
-  useSelectedLocale as b8,
-  useDateFormatter as b9,
-  ForumIcon as bA,
-  GroupAddIcon as bB,
-  LanguageIcon as bC,
-  LightModeIcon as bD,
-  LightbulbIcon as bE,
-  LockIcon as bF,
-  MenuIcon as bG,
-  NotificationsIcon as bH,
-  PaymentsIcon as bI,
-  PeopleIcon as bJ,
-  PersonIcon as bK,
-  PhonelinkLockIcon as bL,
-  SettingsIcon as bM,
-  SmartphoneIcon as bN,
-  TabletIcon as bO,
-  elementToTree as bP,
-  EnvatoIcon as bQ,
-  FacebookIcon as bR,
-  TwitterIcon as bS,
-  useAutoFocus as ba,
-  useIsDarkMode as bb,
-  AvatarPlaceholderIcon as bc,
-  useListbox as bd,
-  Listbox as be,
-  Popover as bf,
-  useListboxKeyboardNavigation as bg,
-  isAbsoluteUrl as bh,
-  Footer as bi,
-  BillingCycleRadio as bj,
-  findBestPrice as bk,
-  removeFromLocalStorage as bl,
-  LocaleSwitcher as bm,
-  useThemeSelector as bn,
-  lazyLoader as bo,
-  useCallbackRef as bp,
-  AccountCircleIcon as bq,
-  AddAPhotoIcon as br,
-  ApiIcon as bs,
-  CheckBoxOutlineBlankIcon as bt,
-  ComputerIcon as bu,
-  DangerousIcon as bv,
-  DarkModeIcon as bw,
-  DevicesIcon as bx,
-  ErrorOutlineIcon as by,
-  FileDownloadDoneIcon as bz,
+  ContextMenu as b0,
+  useMediaQuery as b1,
+  CheckCircleIcon as b2,
+  ComboBoxForwardRef as b3,
+  Underlay as b4,
+  useUserTimezone as b5,
+  useSelectedLocale as b6,
+  useDateFormatter as b7,
+  useAutoFocus as b8,
+  useIsDarkMode as b9,
+  LightbulbIcon as bA,
+  LockIcon as bB,
+  MenuIcon as bC,
+  NotificationsIcon as bD,
+  PaymentsIcon as bE,
+  PeopleIcon as bF,
+  PersonIcon as bG,
+  PhonelinkLockIcon as bH,
+  SettingsIcon as bI,
+  SmartphoneIcon as bJ,
+  TabletIcon as bK,
+  elementToTree as bL,
+  EnvatoIcon as bM,
+  FacebookIcon as bN,
+  TwitterIcon as bO,
+  AvatarPlaceholderIcon as ba,
+  useListbox as bb,
+  Listbox as bc,
+  Popover as bd,
+  useListboxKeyboardNavigation as be,
+  isAbsoluteUrl as bf,
+  Footer as bg,
+  removeFromLocalStorage as bh,
+  LocaleSwitcher as bi,
+  useThemeSelector as bj,
+  lazyLoader as bk,
+  useCallbackRef as bl,
+  AccountCircleIcon as bm,
+  AddAPhotoIcon as bn,
+  ApiIcon as bo,
+  CheckBoxOutlineBlankIcon as bp,
+  ComputerIcon as bq,
+  DangerousIcon as br,
+  DarkModeIcon as bs,
+  DevicesIcon as bt,
+  ErrorOutlineIcon as bu,
+  FileDownloadDoneIcon as bv,
+  ForumIcon as bw,
+  GroupAddIcon as bx,
+  LanguageIcon as by,
+  LightModeIcon as bz,
   useIsMobileMediaQuery as c,
   useNumberFormatter as d,
   IconButton as e,

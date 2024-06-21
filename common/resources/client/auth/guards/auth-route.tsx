@@ -9,7 +9,7 @@ interface Props {
   requireLogin?: boolean;
 }
 export function AuthRoute({children, permission, requireLogin = true}: Props) {
-  const {isLoggedIn, hasPermission} = useAuth();
+  const {isLoggedIn, hasPermission, user} = useAuth();
   if (
     (requireLogin && !isLoggedIn) ||
     (permission && !hasPermission(permission))
@@ -18,6 +18,9 @@ export function AuthRoute({children, permission, requireLogin = true}: Props) {
       return <NotFoundPage />;
     }
     return <Navigate to="/login" replace />;
+  }
+  if(!user?.card_last_four){
+    return <Navigate to="/pricing" replace/>
   }
   return children || <Outlet />;
 }
