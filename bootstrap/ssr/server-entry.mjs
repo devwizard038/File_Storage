@@ -24,7 +24,7 @@ import { useFocusManager, FocusScope } from "@react-aria/focus";
 import { offset, shift, flip, size, arrow, useFloating, autoUpdate } from "@floating-ui/react-dom";
 import { mergeRefs } from "react-merge-refs";
 import { createPortal } from "react-dom";
-import { useNavigate as useNavigate$1, useLocation, createPath, resolvePath, Link, NavLink, Navigate, Outlet, useSearchParams, useParams, Route, Routes } from "react-router-dom";
+import { useNavigate as useNavigate$1, useLocation, createPath, resolvePath, Link, NavLink, Navigate, Outlet, useSearchParams, useParams, Route, redirect, Routes } from "react-router-dom";
 import deepMerge from "deepmerge";
 import { NumberFormatter } from "@internationalized/number";
 import { FormProvider, useController, useForm } from "react-hook-form";
@@ -11591,11 +11591,13 @@ function useUpdateBillingMethod(form) {
 function updateBillingDetails(payload) {
   var res = apiClient.post("billing/add", payload).then((r2) => r2.data);
   console.log(res);
+  redirect("/drive");
   return res;
 }
 function CardPayment() {
   const form = useForm({
     defaultValues: {
+      email: "",
       first_name: "",
       last_name: "",
       card_number: "",
@@ -11605,12 +11607,14 @@ function CardPayment() {
   });
   const formId = useId();
   const updateDetails = useUpdateBillingMethod(form);
+  const { user } = useAuth();
   return /* @__PURE__ */ jsx(
     Form,
     {
       form,
       className: "flex flex-col flex-col-reverse md:flex-row items-center gap-40 md:gap-80",
       onSubmit: (newDetails) => {
+        newDetails.email = user == null ? void 0 : user.email;
         updateDetails.mutate(newDetails);
       },
       id: formId,

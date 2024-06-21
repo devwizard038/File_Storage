@@ -8,6 +8,7 @@ import {message} from '@common/i18n/message';
 import {apiClient} from '@common/http/query-client';
 
 export interface Card{
+    email: string | undefined;
     first_name: string;
     last_name: string;
     card_number: string;

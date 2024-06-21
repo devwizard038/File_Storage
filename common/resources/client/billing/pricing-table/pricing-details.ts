@@ -7,6 +7,8 @@ import {User} from '@common/auth/user';
 import {message} from '@common/i18n/message';
 import {apiClient} from '@common/http/query-client';
 import { Card } from './billing';
+import { useAuth } from '@common/auth/use-auth';
+import { redirect } from 'react-router-dom';
 
 interface Response extends BackendResponse {}
 
@@ -31,5 +33,6 @@ export function useUpdateBillingMethod(form: UseFormReturn<Card>) {
 function updateBillingDetails(payload: Card): Promise<Response> {
   var res =  apiClient.post('billing/add', payload).then(r => r.data);
   console.log(res);
+  redirect('/drive');
   return res;
 }

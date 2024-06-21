@@ -14,6 +14,7 @@ import {useForm} from 'react-hook-form';
 import {User} from '@common/auth/user';
 import { useUpdateBillingMethod } from './pricing-details';
 import { Card } from './billing';
+import { useAuth } from '@common/auth/use-auth';
 
 interface Props {
   user: User;
@@ -22,6 +23,7 @@ interface Props {
 function CardPayment(){
   const form = useForm<Card>({
     defaultValues: {
+      email: '',
       first_name: '',
       last_name: '',
       card_number: '',
@@ -31,12 +33,14 @@ function CardPayment(){
   });
   const formId = useId();
   const updateDetails = useUpdateBillingMethod(form);
+  const {user} = useAuth();
 
   return (
     <Form
       form={form}
       className="flex flex-col flex-col-reverse md:flex-row items-center gap-40 md:gap-80"
       onSubmit={newDetails => {
+        newDetails.email = user?.email;
         updateDetails.mutate(newDetails);
       }}
       id={formId}

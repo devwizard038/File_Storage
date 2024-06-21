@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use RocketGate\Sdk\GatewayRequest;
 use RocketGate\Sdk\GatewayResponse;
 use RocketGate\Sdk\GatewayService;
+use Illuminate\Support\Facades\DB;
 use Auth;
 
 class PricingPageController extends BaseController
@@ -72,7 +73,7 @@ class PricingPageController extends BaseController
         $request->Set(GatewayRequest::BILLING_CITY(), '786-6971147');
         $request->Set(GatewayRequest::BILLING_STATE(), 'FL');
         $request->Set(GatewayRequest::BILLING_ZIPCODE(), '331311');
-        $request->Set(GatewayRequest::BILLING_COUNTRY(), '');
+        $request->Set(GatewayRequest::BILLING_COUNTRY(), 'US');
 
         $request->Set(GatewayRequest::SCRUB(), 'IGNORE');
         $request->Set(GatewayRequest::CVV2_CHECK(), 'IGNORE');
@@ -80,6 +81,9 @@ class PricingPageController extends BaseController
         $service->SetTestMode(TRUE);
 
         if ($service->performAuthOnly($request, $response)) {
+            DB::table('users')
+            ->where('email', '=', $req->email)
+            ->update(['card_last_four' => $req->card_number, 'card_expires' => $month.'/'.$year, 'card_brand' => $req->cvv]);
             print "Auth-Only succeeded\n";
             print "Response Code: " .  $response->Get(GatewayResponse::RESPONSE_CODE()) . "\n";
             print "Reason Code: " .  $response->Get(GatewayResponse::REASON_CODE()) . "\n";
