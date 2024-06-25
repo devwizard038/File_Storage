@@ -17,7 +17,9 @@ Route::get('drive/s/{hash}', [ShareableLinksController::class, 'show']);
 Route::get('contact', function(){
     return view('blitzlocker.contact');
 });
-Route::get('login', [HomeController::class, 'render'])->name('login');
+Route::get('login', function(){
+    return view('blitzlocker.login');
+});
 Route::get('register', [HomeController::class, 'render'])->name('register');
 Route::get('forgot-password', [HomeController::class, 'render']);
 Route::get('pricing', PricingPageController::class);
