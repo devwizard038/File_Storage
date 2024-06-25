@@ -5,7 +5,7 @@ import {CustomPage} from '../admin/custom-pages/custom-page';
 import {useParams} from 'react-router-dom';
 import {getBootstrapData} from '@common/core/bootstrap-data/use-backend-bootstrap-data';
 
-const endpoint = (slugOrId: number | string) => `custom-pages/${slugOrId}`;
+const endpoint = (slugOrId: number | string) => `pages/${slugOrId}`;
 
 export interface FetchCustomPageResponse extends BackendResponse {
   page: CustomPage;

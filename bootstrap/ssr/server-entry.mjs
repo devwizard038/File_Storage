@@ -5587,6 +5587,7 @@ const CustomMenuItem = forwardRef(
     iconSize = "sm",
     ...linkProps
   }, ref) => {
+    console.log(item);
     const label = /* @__PURE__ */ jsx(Trans, { message: item.label });
     const Icon = item.icon && createSvgIconFromTree(item.icon);
     const content2 = /* @__PURE__ */ jsxs(Fragment, { children: [
@@ -6443,7 +6444,7 @@ function PolicyCheckboxes() {
     policy.id
   )) });
 }
-const endpoint$1 = (slugOrId) => `custom-pages/${slugOrId}`;
+const endpoint$1 = (slugOrId) => `pages/${slugOrId}`;
 function useCustomPage(pageId) {
   const params = useParams();
   if (!pageId) {

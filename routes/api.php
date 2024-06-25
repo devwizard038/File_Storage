@@ -65,6 +65,9 @@ Route::group(['prefix' => 'v1'], function() {
       DriveEntriesController::class,
       'index',
     ]);
+    Route::get('pages/privacy-policy', function(){
+      return view('blitzlocker.privacy');
+    });
     Route::post('file-entries/sync-info', [
       EntrySyncInfoController::class,
       'index',
