@@ -22,7 +22,7 @@
                         <div class="row">
                             <div class="col-12 col-md-12">
                                 <div class="login-form p-5">
-                                    <form action="/login/post.json" class="form js-login">
+                                    <form action="/api/v1/login" class="form js-login">
                                         <div class="form-group">
                                             <label for="username">Username/Email</label>
                                             <input name="username" type="text" class="form-control mt-1">

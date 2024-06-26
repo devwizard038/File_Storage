@@ -32,6 +32,12 @@ Route::get('terms', function(){
 Route::get('cookie', function(){
     return view('blitzlocker.cookie');
 });
+Route::get('support', function(){
+    return view('blitzlocker.support');
+});
+Route::get('join', function(){
+    return view('blitzlocker.join');
+});
 
 //CATCH ALL ROUTES AND REDIRECT TO HOME
 Route::fallback([HomeController::class, 'render']);

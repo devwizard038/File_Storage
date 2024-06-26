@@ -1,4 +1,6 @@
-<?php include_once('header.php');?>
+@extends('layouts/app')
+
+@section('content')
 <div class="join-page">
             <main class="main">
                 <!-- Inner Hero Section -->
@@ -199,6 +201,5 @@
                     </div>
                 </section>
             </main>
-
-<?php include_once('footer.php');?>
 </div>
+@endsection
