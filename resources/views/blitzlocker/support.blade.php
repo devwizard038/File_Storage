@@ -1,4 +1,6 @@
-<?php include_once('header.php');?>
+@extends('layouts/app')
+
+@section('content')
 <main class="main">
                 <!-- Inner Hero Section -->
                 <section class="section bg--solid--dark-blue inner-hero-sec">
@@ -78,4 +80,4 @@
                     </div>
                 </section>
             </main>
-<?php include_once('footer.php');?>
+@endsection

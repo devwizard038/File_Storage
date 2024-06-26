@@ -1,4 +1,6 @@
-<?php include_once('header.php');?>
+@extends('layouts/app')
+
+@section('content')
 
             <main class="main">
                 <!-- Inner Hero Section -->
@@ -70,4 +72,4 @@
                 </section>
             </main>
             
-<?php include_once('footer.php');?>
+@endsection

@@ -20,6 +20,9 @@ Route::get('contact', function(){
 Route::get('login', function(){
     return view('blitzlocker.login');
 });
+Route::get('about', function(){
+    return view('blitzlocker.about');
+});
 Route::get('register', [HomeController::class, 'render'])->name('register');
 Route::get('forgot-password', [HomeController::class, 'render']);
 Route::get('pricing', PricingPageController::class);
@@ -31,6 +34,12 @@ Route::get('terms', function(){
 });
 Route::get('cookie', function(){
     return view('blitzlocker.cookie');
+});
+Route::get('support', function(){
+    return view('blitzlocker.support');
+});
+Route::get('join', function(){
+    return view('blitzlocker.join');
 });
 
 //CATCH ALL ROUTES AND REDIRECT TO HOME
