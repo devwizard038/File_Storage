@@ -20,6 +20,9 @@ Route::get('contact', function(){
 Route::get('login', function(){
     return view('blitzlocker.login');
 });
+Route::get('about', function(){
+    return view('blitzlocker.about');
+});
 Route::get('register', [HomeController::class, 'render'])->name('register');
 Route::get('forgot-password', [HomeController::class, 'render']);
 Route::get('pricing', PricingPageController::class);
