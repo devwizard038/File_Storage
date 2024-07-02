@@ -22,10 +22,10 @@
                         <div class="row">
                             <div class="col-12 col-md-12">
                                 <div class="login-form p-5">
-                                    <form action="/api/v1/login" class="form js-login">
+                                    <form action="auth/login" class="form js-login" method=post>
                                         <div class="form-group">
-                                            <label for="username">Username/Email</label>
-                                            <input name="username" type="text" class="form-control mt-1">
+                                            <label for="email">Username/Email</label>
+                                            <input name="email" type="text" class="form-control mt-1">
                                         </div>
                                         <div class="form-group mt-4">
                                             <label for="password">Password</label>

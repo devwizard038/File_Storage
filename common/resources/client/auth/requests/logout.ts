@@ -23,7 +23,7 @@ export function useLogout() {
       // need to update bootstrap data in order for redirect to login page to work
       setBootstrapData(response.bootstrapData);
       queryClient.clear();
-      navigate('/login');
+      navigate('/');
 
       // need to clear query client and then set bootstrap data again immediately,
       // because there's no way to clear everything except one in react query

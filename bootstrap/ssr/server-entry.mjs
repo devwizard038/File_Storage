@@ -1717,7 +1717,7 @@ function highlightAllCode(el, themeMode = "dark") {
   });
 }
 async function highlightCode(el, themeMode = "dark") {
-  const { hljs } = await import("./assets/highlight-c2ceda41.mjs");
+  const { hljs } = await import("./assets/highlight-970aedf0.mjs");
   if (!el.dataset.highlighted) {
     el.classList.add(themeMode === "dark" ? "hljs-dark" : "hljs-light");
     hljs.highlightElement(el);
@@ -2956,7 +2956,7 @@ function useLogout() {
     onSuccess: (response) => {
       setBootstrapData2(response.bootstrapData);
       queryClient.clear();
-      navigate("/login");
+      navigate("/");
       queryClient.clear();
       setBootstrapData2(response.bootstrapData);
     },
@@ -5587,7 +5587,6 @@ const CustomMenuItem = forwardRef(
     iconSize = "sm",
     ...linkProps
   }, ref) => {
-    console.log(item);
     const label = /* @__PURE__ */ jsx(Trans, { message: item.label });
     const Icon = item.icon && createSvgIconFromTree(item.icon);
     const content2 = /* @__PURE__ */ jsxs(Fragment, { children: [
@@ -5651,7 +5650,7 @@ function CookieNotice() {
         /* @__PURE__ */ jsx(
           Trans,
           {
-            message: "We use cookies to optimize site functionality and provide you with the\n      best possible experience."
+            message: "We use cookies to optimize site functionality and provide you with the\r\n      best possible experience."
           }
         ),
         /* @__PURE__ */ jsx(InfoLink, {}),
@@ -6535,7 +6534,7 @@ function getSizeClassName(size2, imageHeight) {
       };
   }
 }
-const notifySvg = "/assets/notify-d1de4ec3.svg";
+const notifySvg = "/assets/notify-08766a3d.svg";
 function NotificationEmptyStateMessage() {
   const { notif } = useSettings();
   return /* @__PURE__ */ jsx(
@@ -7254,7 +7253,7 @@ function NotFoundPage() {
         /* @__PURE__ */ jsx("p", { className: "my-16 text-main", children: /* @__PURE__ */ jsx(
           Trans,
           {
-            message: "Sorry about that! Please visit our homepage to get where you need\n                to go."
+            message: "Sorry about that! Please visit our homepage to get where you need\r\n                to go."
           }
         ) }),
         /* @__PURE__ */ jsx(
@@ -7983,9 +7982,6 @@ function AuthRoute({ children, permission, requireLogin = true }) {
       return /* @__PURE__ */ jsx(NotFoundPage, {});
     }
     return /* @__PURE__ */ jsx(Navigate, { to: "/login", replace: true });
-  }
-  if (!(user == null ? void 0 : user.card_last_four)) {
-    return /* @__PURE__ */ jsx(Navigate, { to: "/pricing", replace: true });
   }
   return children || /* @__PURE__ */ jsx(Outlet, {});
 }
@@ -10607,7 +10603,7 @@ function PlainTextPreview({ plainTextToken }) {
     ] })
   ] });
 }
-const secureFilesSvg = "/assets/secure-files-17b4728d.svg";
+const secureFilesSvg = "/assets/secure-files-cffa0260.svg";
 function AccessTokenPanel({ user }) {
   const tokens = user.tokens || [];
   const { hasPermission } = useAuth();
@@ -12095,8 +12091,8 @@ function ContactUsPage() {
     /* @__PURE__ */ jsx(Footer, { className: "container mx-auto px-24 flex-shrink-0" })
   ] });
 }
-const AdminRoutes = React.lazy(() => import("./assets/admin-routes-8a045b1c.mjs").then((n) => n.A));
-const DriveRoutes = React.lazy(() => import("./assets/drive-routes-0b0f7e54.mjs"));
+const AdminRoutes = React.lazy(() => import("./assets/admin-routes-de3012eb.mjs").then((n) => n.A));
+const DriveRoutes = React.lazy(() => import("./assets/drive-routes-af2d819a.mjs"));
 const SwaggerApiDocs = React.lazy(
   () => import("./assets/swagger-api-docs-page-92703601.mjs")
 );

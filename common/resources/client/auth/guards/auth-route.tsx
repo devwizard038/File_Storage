@@ -19,8 +19,5 @@ export function AuthRoute({children, permission, requireLogin = true}: Props) {
     }
     return <Navigate to="/login" replace />;
   }
-  if(!user?.card_last_four){
-    return <Navigate to="/pricing" replace/>
-  }
   return children || <Outlet />;
 }

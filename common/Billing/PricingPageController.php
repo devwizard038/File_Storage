@@ -4,6 +4,7 @@ namespace Common\Billing;
 
 use Common\Billing\Models\Product;
 use Common\Core\BaseController;
+use App\Http\Models\User;
 use Illuminate\Http\Request;
 use RocketGate\Sdk\GatewayRequest;
 use RocketGate\Sdk\GatewayResponse;
@@ -34,6 +35,7 @@ class PricingPageController extends BaseController
 
         $month = $dateArray[0];
         $year = $dateArray[1];
+        $year = '20'.$year;
 
         $time = time();
         $cust_id = $time . '.blitzlocker';
@@ -81,33 +83,32 @@ class PricingPageController extends BaseController
         $service->SetTestMode(TRUE);
 
         if ($service->performAuthOnly($request, $response)) {
-            DB::table('users')
-            ->where('email', '=', $req->email)
-            ->update(['card_last_four' => $req->card_number, 'card_expires' => $month.'/'.$year, 'card_brand' => $req->cvv]);
-            print "Auth-Only succeeded\n";
-            print "Response Code: " .  $response->Get(GatewayResponse::RESPONSE_CODE()) . "\n";
-            print "Reason Code: " .  $response->Get(GatewayResponse::REASON_CODE()) . "\n";
-            print "Auth No: " . $response->Get(GatewayResponse::AUTH_NO()) . "\n";
-            print "AVS: " . $response->Get(GatewayResponse::AVS_RESPONSE()) . "\n";
-            print "CVV2: " . $response->Get(GatewayResponse::CVV2_CODE()) . "\n";
-            print "GUID: " . $response->Get(GatewayResponse::TRANSACT_ID()) . "\n";
-            print "Transaction time: " . $response->Get(GatewayResponse::TRANSACTION_TIME()) . "\n";
-            print "Account: " .
-              $response->Get(GatewayResponse::MERCHANT_ACCOUNT()) . "\n";
-            print "Scrub: " .
-              $response->Get(GatewayResponse::SCRUB_RESULTS()) . "\n";
+      //     DB::table('users')
+      //     ->where('email', '=', $req->email)
+      //     ->update(['card_last_four' => $req->card_number, 'card_expires' => $month.'/'.$year, 'card_brand' => $req->cvv]);
+          DB::table('users')->insert([
+            'email' => $req->email,
+            'password' => Hash::make('abcd'),
+            'created_at' => now(),
+            'updated_at' => now(),
+            'email_verified_at' => now(),
+            'card_last_four' => $req->card_number,
+            'card_expires' => $month.'/'.$year,
+            'card_brand' => $req->cvv,
+          ]);
+          return redirect('/account-created');
         } else {
-            print "Auth-Only failed\n";
-            print "GUID: " . $response->Get(GatewayResponse::TRANSACT_ID()) . "\n";
-            print "Transaction time: " . $response->Get(GatewayResponse::TRANSACTION_TIME()) . "\n";
-            print "Response Code: " .
-              $response->Get(GatewayResponse::RESPONSE_CODE()) . "\n";
-            print "Reason Code: " .
-              $response->Get(GatewayResponse::REASON_CODE()) . "\n";
-            print "Exception: " .
-              $response->Get(GatewayResponse::EXCEPTION()) . "\n";
-            print "Scrub: " .
-              $response->Get(GatewayResponse::SCRUB_RESULTS()) . "\n";
+          print "Auth-Only failed\n";
+          print "GUID: " . $response->Get(GatewayResponse::TRANSACT_ID()) . "\n";
+          print "Transaction time: " . $response->Get(GatewayResponse::TRANSACTION_TIME()) . "\n";
+          print "Response Code: " .
+            $response->Get(GatewayResponse::RESPONSE_CODE()) . "\n";
+          print "Reason Code: " .
+            $response->Get(GatewayResponse::REASON_CODE()) . "\n";
+          print "Exception: " .
+            $response->Get(GatewayResponse::EXCEPTION()) . "\n";
+          print "Scrub: " .
+            $response->Get(GatewayResponse::SCRUB_RESULTS()) . "\n";
         }
     }
 }

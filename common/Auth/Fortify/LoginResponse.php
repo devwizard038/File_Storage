@@ -9,7 +9,7 @@ use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 
 class LoginResponse implements LoginResponseContract
 {
-    public function toResponse($request): JsonResponse
+    public function toResponse($request)
     {
         if ($request->get('password') && settings('single_device_login')) {
             Auth::logoutOtherDevices($request->get('password'));
@@ -18,6 +18,8 @@ class LoginResponse implements LoginResponseContract
         $data = app(BootstrapData::class)
             ->init()
             ->getEncoded();
+
+        return redirect('/drive');
 
         return response()->json([
             'bootstrapData' => $data,
