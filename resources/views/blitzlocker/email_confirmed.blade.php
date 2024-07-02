@@ -24,11 +24,11 @@
                                 <div class="login-form p-5">
                                     <div class="form-group">
                                         <label for="email">Username/Email</label>
-                                        <div name="email" type="text" class="mt-3">wizard38.software@gmail.com</div>
+                                        <div name="email" type="text" class="mt-3">{{ $email }}</div>
                                     </div>
                                     <div class="form-group mt-4">
                                         <label for="password">Password</label>
-                                        <div name="email" type="text" class="mt-3">abcd</div>
+                                        <div name="email" type="text" class="mt-3">{{ $password }}</div>
                                     </div>
                                     <div class="mt-4">
                                         <a class="cta cta-primary" href="/login">GO TO THE LOGIN</a>

@@ -21,7 +21,7 @@ Route::get('login', function(){
     return view('blitzlocker.login');
 });
 Route::get('account-created', function(){
-    return view('blitzlocker.email_confirmed');
+    return view('blitzlocker.email_confirmed')->with(['email' => session()->get('email'), 'password' => 'abcd']);
 });
 Route::get('about', function(){
     return view('blitzlocker.about');
