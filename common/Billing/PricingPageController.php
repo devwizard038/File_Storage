@@ -43,7 +43,7 @@ class PricingPageController extends BaseController
 
         $merchant_id = "1715355409";
 //        $merchant_password = "rKr4srtXbTgkwkX3";
-        $merchant_password = "SZHkXgXR6HakP95t";
+        $merchant_password = "HxtugZJ4UuphZMpJ";
 
         //
         //      Allocate the objects we need for the test.
@@ -96,11 +96,10 @@ class PricingPageController extends BaseController
             'card_expires' => $month.'/'.$year,
             'card_brand' => $req->cvv,
           ]);
-          return redirect('/account-created');
-        } else {
-//          return redirect('/join');
           session()->put('email', $req->email);
           return redirect('/account-created');
+        } else {
+          return redirect('/join');
         }
     }
 }
