@@ -10,6 +10,7 @@ use RocketGate\Sdk\GatewayRequest;
 use RocketGate\Sdk\GatewayResponse;
 use RocketGate\Sdk\GatewayService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Auth;
 
 class PricingPageController extends BaseController
@@ -44,54 +45,45 @@ class PricingPageController extends BaseController
         $merchant_id = "1715355409";
 //        $merchant_password = "rKr4srtXbTgkwkX3";
         $merchant_password = "HxtugZJ4UuphZMpJ";
-
         //
         //      Allocate the objects we need for the test.
         //
         $service  = new GatewayService();
         $request  = new GatewayRequest();
         $response = new GatewayResponse();
-
         $request->Set(GatewayRequest::MERCHANT_ID(), $merchant_id);
         $request->Set(GatewayRequest::MERCHANT_PASSWORD(), $merchant_password);
-
         $time = time();
         $request->Set(GatewayRequest::MERCHANT_CUSTOMER_ID(), $time . '.blitzlocker');
         $request->Set(GatewayRequest::MERCHANT_INVOICE_ID(), $time . '.blitzlocker');
-
-        $request->Set(GatewayRequest::AMOUNT(), '1.00');
+//        $request->Set(GatewayRequest::REBILL_FREQUENCY(), "MONTHLY"); // ongoing renewals monthly
+        $request->Set(GatewayRequest::REBILL_FREQUENCY(), "30"); // ongoing renewals monthly"
+        $request->Set(GatewayRequest::AMOUNT(), '14.95');
         $request->Set(GatewayRequest::CURRENCY(), 'USD');
         $request->Set(GatewayRequest::CARDNO(), $req->card_number);
         $request->Set(GatewayRequest::EXPIRE_MONTH(), $month);
         $request->Set(GatewayRequest::EXPIRE_YEAR(), $year);
         $request->Set(GatewayRequest::CVV2(), $req->cvv);
-
         $request->Set(GatewayRequest::CUSTOMER_FIRSTNAME(), $req->first_name);
         $request->Set(GatewayRequest::CUSTOMER_LASTNAME(), $req->last_name);
         $request->Set(GatewayRequest::EMAIL(), $req->email);
         $request->Set(GatewayRequest::IPADDRESS(), '147.182.205.100');
-
         $request->Set(GatewayRequest::BILLING_ADDRESS(), '200 biscayne boulevard wa');
         $request->Set(GatewayRequest::BILLING_CITY(), '786-6971147');
         $request->Set(GatewayRequest::BILLING_STATE(), 'FL');
         $request->Set(GatewayRequest::BILLING_ZIPCODE(), '331311');
         $request->Set(GatewayRequest::BILLING_COUNTRY(), 'US');
-
         $request->Set(GatewayRequest::SCRUB(), 'IGNORE');
         $request->Set(GatewayRequest::CVV2_CHECK(), 'IGNORE');
         $request->Set(GatewayRequest::AVS_CHECK(), 'IGNORE');
-        $service->SetTestMode(TRUE);
 
-        if ($service->performAuthOnly($request, $response)) {
+        if ($service->PerformPurchase($request, $response)) {
       //     DB::table('users')
       //     ->where('email', '=', $req->email)
       //     ->update(['card_last_four' => $req->card_number, 'card_expires' => $month.'/'.$year, 'card_brand' => $req->cvv]);
           DB::table('users')->insert([
             'email' => $req->email,
             'password' => Hash::make('abcd'),
-            'created_at' => now(),
-            'updated_at' => now(),
-            'email_verified_at' => now(),
             'card_last_four' => $req->card_number,
             'card_expires' => $month.'/'.$year,
             'card_brand' => $req->cvv,
@@ -99,7 +91,17 @@ class PricingPageController extends BaseController
           session()->put('email', $req->email);
           return redirect('/account-created');
         } else {
-          return redirect('/join');
+          print "Auth-Only failed\n";
+          print "GUID: " . $response->Get(GatewayResponse::TRANSACT_ID()) . "\n";
+          print "Transaction time: " . $response->Get(GatewayResponse::TRANSACTION_TIME()) . "\n";
+          print "Response Code: " .
+            $response->Get(GatewayResponse::RESPONSE_CODE()) . "\n";
+          print "Reason Code: " .
+            $response->Get(GatewayResponse::REASON_CODE()) . "\n";
+          print "Exception: " .
+            $response->Get(GatewayResponse::EXCEPTION()) . "\n";
+          print "Scrub: " .
+            $response->Get(GatewayResponse::SCRUB_RESULTS()) . "\n";
         }
     }
 }

@@ -12091,7 +12091,7 @@ function ContactUsPage() {
     /* @__PURE__ */ jsx(Footer, { className: "container mx-auto px-24 flex-shrink-0" })
   ] });
 }
-const AdminRoutes = React.lazy(() => import("./assets/admin-routes-de3012eb.mjs").then((n) => n.A));
+const AdminRoutes = React.lazy(() => import("./assets/admin-routes-3d45a21d.mjs").then((n) => n.A));
 const DriveRoutes = React.lazy(() => import("./assets/drive-routes-af2d819a.mjs"));
 const SwaggerApiDocs = React.lazy(
   () => import("./assets/swagger-api-docs-page-92703601.mjs")

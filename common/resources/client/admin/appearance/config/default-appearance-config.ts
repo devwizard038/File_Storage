@@ -94,7 +94,6 @@ export const DefaultAppearanceConfig: IAppearanceConfig = {
       config: {
         availableRoutes: [
           '/',
-          '/login',
           '/register',
           '/contact',
           '/pricing',
