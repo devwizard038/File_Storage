@@ -180,12 +180,12 @@
                                             <small class="d-block mt-2 text-color-4">(Get 1Tb Of Storage To Secure Your Files)</small>
                                         </div>
                                         <div class="col-2 pt-2 pb-2">
-                                            <strong class="small">$14.86 monthly</strong>
+                                            <strong class="small">$14.95 monthly</strong>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="total text-end pt-2 pb-4">
-                                        Total: <strong>$14.86</strong> USD
+                                        Total: <strong>$14.95</strong> USD
                                     </div>
                                 </div>
                 
