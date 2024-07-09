@@ -25,7 +25,7 @@
                                     <div class="d-flex flex-column">
                                         <h3 class="h3 mb-3">Billing Information</h3>
                                     </div>
-                                    <form action="/api/v1/billing/add" class="contact-form-info mb-5" method=post>
+                                    <form action="/api/v1/billing/add" class="contact-form-info mb-5" method=post onsubmit="return validateForm();">
                                         <div class="form-group mb-3">
                                             <input type="email" name='email' id="email" placeholder="Your E-mail" class="form-control">
                                         </div>
@@ -50,6 +50,9 @@
                                             <div class="col-3">
                                                 <div class="form-group mb-3">
                                                     <input type="text" name='expire_date' id="date" placeholder="MM/YY" class="form-control">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <p class="p-alert div-hidden" id="p-date">Date format should be MM/YY</p>
                                                 </div>
                                             </div>
                                             <div class="col-3">
@@ -156,7 +159,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-12">
-                                            <input type="checkbox" name="accept"> I've read and accept the <a href="terms" class="underline">T&amp;C's</a>, <a href="terms" class="underline">refund</a> and <a href="privacy" class="underline">privacy</a> policies prior to completing this order.
+                                                <input type="checkbox" name="accept" class="" id = "check-accept"> I've read and accept the <a href="terms" class="underline">T&amp;C's</a>, <a href="terms" class="underline">refund</a> and <a href="privacy" class="underline">privacy</a> policies prior to completing this order.
                                             </div>
                                         </div>
                                         <div class="mt-4 mb-2 text-center">
@@ -180,12 +183,12 @@
                                             <small class="d-block mt-2 text-color-4">(Get 1Tb Of Storage To Secure Your Files)</small>
                                         </div>
                                         <div class="col-2 pt-2 pb-2">
-                                            <strong class="small">$14.95 monthly</strong>
+                                            <strong class="small">$24.95 monthly</strong>
                                         </div>
                                     </div>
                                     <hr>
                                     <div class="total text-end pt-2 pb-4">
-                                        Total: <strong>$14.95</strong> USD
+                                        Total: <strong>$24.95</strong> USD
                                     </div>
                                 </div>
                 

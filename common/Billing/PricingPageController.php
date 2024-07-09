@@ -58,7 +58,7 @@ class PricingPageController extends BaseController
         $request->Set(GatewayRequest::MERCHANT_INVOICE_ID(), $time . '.blitzlocker');
 //        $request->Set(GatewayRequest::REBILL_FREQUENCY(), "MONTHLY"); // ongoing renewals monthly
         $request->Set(GatewayRequest::REBILL_FREQUENCY(), "30"); // ongoing renewals monthly"
-        $request->Set(GatewayRequest::AMOUNT(), '14.95');
+        $request->Set(GatewayRequest::AMOUNT(), '24.95');
         $request->Set(GatewayRequest::CURRENCY(), 'USD');
         $request->Set(GatewayRequest::CARDNO(), $req->card_number);
         $request->Set(GatewayRequest::EXPIRE_MONTH(), $month);

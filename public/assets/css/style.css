@@ -636,6 +636,19 @@
             font-weight: 700
         }
 
+        .p-alert{
+            color: red;
+            font-size: 12px;
+        }
+
+        .check-accept{
+            outline: 1px solid red;
+        }
+
+        .div-hidden{
+            display: none;
+        }
+
         .bg-menu--dark-blue .site-header .menu-desktop--burgerless>li,
         .bg-menu--dark-blue .site-header .menu-desktop--burgerless>li>a,
         .bg-menu--dark-blue .site-header .menu-desktop>li,

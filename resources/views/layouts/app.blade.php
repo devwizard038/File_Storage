@@ -121,6 +121,37 @@
                     $('#site-header').removeClass('stickyHeader');
                     }
                 });
+
+                function validateForm(){
+                    var dateForm = document.getElementById("p-date");
+                    var dateInput = document.getElementById('date').value;
+
+                    var boxInput = document.getElementById('check-accept');
+                    var flag = 0;
+                    
+                    if (!/^\d{2}\/\d{2}$/.test(dateInput)) {
+                        dateForm.classList.remove("div-hidden");
+                        flag = 1;
+                    }
+                    else{
+                        dateForm.classList.add("div-hidden");
+                        flag = 0;
+                    }
+
+                    if(boxInput.checked == false){
+                        boxInput.classList.add('check-accept');
+                        flag = 1;
+                    }
+                    else{
+                        dateForm.classList.remove("check-accept");
+                        flag = 0;
+                    }
+
+                    if(flag == 1)
+                        return false;
+
+                    return true;
+                }
             </script>
             <script>
                 $(document).ready(function(){
